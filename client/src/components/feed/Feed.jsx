@@ -10,13 +10,15 @@ export default function Feed({ username }) {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get("/posts/timeline/697b1481514767b3df29d78d").then((res) => {
-        setPosts(res.data);
-      });
+      const res = username
+        ? await axios.get("/posts/profile/" + username)
+        : await axios.get("/posts/profile/john");
+
+      setPosts(res.data);
     };
 
     fetchPosts();
-  }, []);
+  }, [username]);
 
   return (
     <div className="feed">
