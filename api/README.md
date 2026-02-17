@@ -3,5 +3,5 @@
 ```
 npm init
 
-npm install express mongoose dotenv helmet morgan nodemon bcrypt
+npm install express mongoose dotenv helmet morgan nodemon bcrypt axios
 ```
