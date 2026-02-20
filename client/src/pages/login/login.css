@@ -54,6 +54,14 @@
   outline: none;
 }
 
+.loginButton:focus {
+  outline: none;
+}
+
+.loginButton:disabled {
+  cursor: not-allowed;
+}
+
 .loginButton {
   height: 50px;
   border-radius: 10px;
