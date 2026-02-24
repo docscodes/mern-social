@@ -19,6 +19,19 @@ export default function Share() {
       desc: desc.current.value,
     };
 
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+
+      data.append("name", fileName);
+      data.append("file", file);
+      newPost.img = fileName;
+
+      try {
+        await axios.post("/upload", data);
+      } catch (err) {}
+    }
+
     try {
       await axios.post("/posts", newPost);
       window.location.reload();
@@ -47,7 +60,7 @@ export default function Share() {
         >
           <div className="shareOptions">
             <label
-              htmlfor="file"
+              htmlFor="file"
               className="shareOption"
             >
               <PermMedia
