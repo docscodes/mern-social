@@ -20,6 +20,8 @@ try {
   handleError(error);
 }
 
+app.use("/images", express.static(path.join(__dirname, "public/images")));
+
 //middleware
 app.use(express.json());
 app.use(helmet());
