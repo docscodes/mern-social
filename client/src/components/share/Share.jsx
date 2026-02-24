@@ -1,4 +1,5 @@
 import { EmojiEmotions, Label, PermMedia, Room } from "@mui/icons-material";
+import axios from "axios";
 import { useContext, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./share.css";
@@ -9,6 +10,20 @@ export default function Share() {
 
   const desc = useRef();
   const [file, setFile] = useState(null);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+
+    const newPost = {
+      userId: user._id,
+      desc: desc.current.value,
+    };
+
+    try {
+      await axios.post("/posts", newPost);
+      window.location.reload();
+    } catch (err) {}
+  };
 
   return (
     <div className="share">
@@ -26,7 +41,10 @@ export default function Share() {
           />
         </div>
         <hr className="shareHr" />
-        <form className="shareBottom">
+        <form
+          className="shareBottom"
+          onSubmit={submitHandler}
+        >
           <div className="shareOptions">
             <label
               htmlfor="file"
@@ -67,7 +85,12 @@ export default function Share() {
               <span className="shareOptionText">Feelings</span>
             </div>
           </div>
-          <button className="shareButton">Share</button>
+          <button
+            className="shareButton"
+            type="submit"
+          >
+            Share
+          </button>
         </form>
       </div>
     </div>
