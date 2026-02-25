@@ -24,7 +24,7 @@ export default function Rightbar({ user }) {
       }
     };
 
-    if (user._id) {
+    if (user?._id) {
       getFriends();
     }
   }, [user]);
