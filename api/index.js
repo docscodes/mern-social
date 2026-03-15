@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
@@ -14,29 +17,30 @@ const path = require("path");
 
 dotenv.config();
 
-try {
-  mongoose.connect(process.env.MONGO_URL);
-} catch (error) {
-  handleError(error);
-}
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: { folder: "mern-social" },
+});
+const upload = multer({ storage });
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
-//middleware
-app.use(express.json());
-app.use(helmet());
-app.use(morgan("common"));
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, "public/images");
+//   },
+//   filename: (req, file, cb) => {
+//     cb(null, req.body.name);
+//   },
+// });
+// const upload = multer({ storage: storage });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images");
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.name);
-  },
-});
-
-const upload = multer({ storage: storage });
 app.post("/api/upload", upload.single("file"), (req, res) => {
   try {
     return res.status(200).json("File uploded successfully");
@@ -44,6 +48,11 @@ app.post("/api/upload", upload.single("file"), (req, res) => {
     console.error(error);
   }
 });
+
+//middleware
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("common"));
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
