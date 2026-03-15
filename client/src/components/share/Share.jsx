@@ -11,6 +11,33 @@ export default function Share() {
   const desc = useRef();
   const [file, setFile] = useState(null);
 
+  // const submitHandler = async (e) => {
+  //   e.preventDefault();
+
+  //   const newPost = {
+  //     userId: user._id,
+  //     desc: desc.current.value,
+  //   };
+
+  //   if (file) {
+  //     const data = new FormData();
+  //     const fileName = Date.now() + file.name;
+
+  //     data.append("name", fileName);
+  //     data.append("file", file);
+  //     newPost.img = fileName;
+
+  //     try {
+  //       await axios.post("/api/upload", data);
+  //     } catch (err) {}
+  //   }
+
+  //   try {
+  //     await axios.post("/api/posts", newPost);
+  //     window.location.reload();
+  //   } catch (err) {}
+  // };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
@@ -21,14 +48,11 @@ export default function Share() {
 
     if (file) {
       const data = new FormData();
-      const fileName = Date.now() + file.name;
-
-      data.append("name", fileName);
       data.append("file", file);
-      newPost.img = fileName;
 
       try {
-        await axios.post("/api/upload", data);
+        const uploadRes = await axios.post("/api/upload", data);
+        newPost.img = uploadRes.data.url;
       } catch (err) {}
     }
 

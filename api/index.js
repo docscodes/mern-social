@@ -25,7 +25,7 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: { folder: "mern-social" },
+  params: { folder: "mern-social/post" },
 });
 const upload = multer({ storage });
 
@@ -40,12 +40,20 @@ app.use("/images", express.static(path.join(__dirname, "public/images")));
 //   },
 // });
 // const upload = multer({ storage: storage });
+// app.post("/api/upload", upload.single("file"), (req, res) => {
+//   try {
+//     return res.status(200).json("File uploded successfully");
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
 app.post("/api/upload", upload.single("file"), (req, res) => {
   try {
-    return res.status(200).json("File uploded successfully");
+    return res.status(200).json({ url: req.file.path });
   } catch (error) {
     console.error(error);
+    return res.status(500).json("File upload failed");
   }
 });
 
