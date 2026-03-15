@@ -79,7 +79,12 @@ export default function Register() {
             >
               Sign Up
             </button>
-            <button className="loginRegisterButton">Log into Account</button>
+            <button
+              className="loginRegisterButton"
+              onClick={() => navigate("/login")}
+            >
+              Log into Account
+            </button>
           </form>
         </div>
       </div>
